@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PulseBand | Athletic Sensor</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1018;
+    color: #f5f7fa;
+}
+
+header {
+    padding: 22px 7%;
+    background: #111a27;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #273548;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #38d9a9;
+}
+
+.status {
+    color: #38d9a9;
+    font-size: 13px;
+}
+
+.container {
+    max-width: 1150px;
+    margin: auto;
+    padding: 35px 20px;
+}
+
+.welcome {
+    margin-bottom: 30px;
+}
+
+.welcome h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #8d9aab;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: #141e2c;
+    border: 1px solid #273548;
+    border-radius: 15px;
+    padding: 23px;
+    transition: .2s;
+}
+
+.card:hover {
+    border-color: #38d9a9;
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    color: #a8b5c5;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.metric {
+    font-size: 37px;
+    font-weight: bold;
+}
+
+.unit {
+    font-size: 15px;
+    color: #8d9aab;
+}
+
+.heart { color: #ff647c; }
+.calories { color: #ffad55; }
+.temperature { color: #55c7ff; }
+.distance { color: #38d9a9; }
+
+.subtext {
+    color: #8493a5;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+.chart {
+    height: 75px;
+    display: flex;
+    align-items: end;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.bar {
+    flex: 1;
+    background: #ff647c;
+    border-radius: 4px 4px 0 0;
+    min-height: 8px;
+    transition: height .4s;
+}
+
+.section-title {
+    margin: 35px 0 18px;
+    font-size: 20px;
+}
+
+.activity {
+    background: #141e2c;
+    border: 1px solid #273548;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.activity-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.activity-row p {
+    color: #91a0b1;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+button {
+    background: #38d9a9;
+    color: #07150f;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #27bd91;
+}
+
+button.secondary {
+    background: #273548;
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* ACTIVITY HISTORY */
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+    color: #38d9a9;
+    font-weight: bold;
+    gap: 10px;
+}
+
+.history-header::-webkit-details-marker {
+    display: none;
+}
+
+.history-header::after {
+    content: "+";
+    font-size: 23px;
+    color: #38d9a9;
+}
+
+.history-dropdown[open] .history-header::after {
+    content: "−";
+}
+
+.history-count {
+    color: #8493a5;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.log-entry {
+    padding: 17px 5px;
+    border-bottom: 1px solid #273548;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.log-entry summary::-webkit-details-marker {
+    display: none;
+}
+
+.log-entry summary strong {
+    color: #f5f7fa;
+    font-size: 14px;
+}
+
+.log-entry summary span {
+    color: #38d9a9;
+    font-size: 13px;
+}
+
+.log-details {
+    color: #a8b5c5;
+    font-size: 13px;
+    line-height: 2;
+    padding: 15px 5px 5px;
+}
+
+.empty-history {
+    color: #8493a5;
+    font-size: 13px;
+    padding-top: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #68788b;
+    font-size: 12px;
+}
+
+@media(max-width: 650px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome h1 {
+        font-size: 25px;
+    }
+
+    .activity-row {
+        align-items: flex-start;
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    .metric {
+        font-size: 33px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">◉ PULSEBAND</div>
+    <div class="status" id="status">● DEVICE CONNECTED</div>
+</header>
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Athletic Performance Dashboard</h1>
+        <p>Monitor your performance and track your daily activity.</p>
+    </div>
+
+    <div class="grid">
+
+        <!-- HEART RATE -->
+        <div class="card">
+            <h3>♥ HEART RATE</h3>
+            <div class="metric heart">
+                <span id="heart">72</span>
+                <span class="unit">BPM</span>
+            </div>
+            <div class="subtext">Simulated heart rate reading</div>
+            <div class="chart" id="heartChart"></div>
+        </div>
+
+        <!-- CALORIES -->
+        <div class="card">
+            <h3>🔥 CALORIES BURNED</h3>
+            <div class="metric calories">
+                <span id="calories">124</span>
+                <span class="unit">kcal</span>
+            </div>
+            <div class="subtext">Estimated calories burned</div>
+        </div>
+
+        <!-- TEMPERATURE -->
+        <div class="card">
+            <h3>🌡️ BODY TEMPERATURE</h3>
+            <div class="metric temperature">
+                <span id="temperature">98.4</span>
+                <span class="unit">°F</span>
+            </div>
+            <div class="subtext">Simulated skin temperature sensor</div>
+        </div>
+
+        <!-- DISTANCE -->
+        <div class="card">
+            <h3>📍 DISTANCE TRAVELED</h3>
+            <div class="metric distance">
+                <span id="distance">1.25</span>
+                <span class="unit">mi</span>
+            </div>
+            <div class="subtext">
+                <span id="steps">2,450</span> steps recorded
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WORKOUT -->
+    <h2 class="section-title">Workout Session</h2>
+
+    <div class="activity">
+
+        <div class="activity-row">
+            <div>
+                <h3 id="workoutStatus">Ready to Start</h3>
+                <p>Live simulated sensor monitoring</p>
+            </div>
+
+            <div class="status" id="workoutIndicator">
+                ● INACTIVE
+            </div>
+        </div>
+
+        <div class="grid" style="margin-top:25px">
+
+            <div>
+                <div class="subtext">DURATION</div>
+                <div class="metric" id="duration">00:00</div>
+            </div>
+
+            <div>
+                <div class="subtext">AVERAGE HEART RATE</div>
+                <div class="metric heart" id="averageHeart">72</div>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button onclick="startWorkout()" id="startButton">
+                Start Workout
+            </button>
+
+            <button class="secondary" onclick="pauseWorkout()">
+                Pause
+            </button>
+
+            <button class="secondary" onclick="finishWorkout()">
+                Finish Session
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ACTIVITY HISTORY DROPDOWN -->
+
+    <h2 class="section-title">Activity History</h2>
+
+    <div class="activity">
+
+        <details class="history-dropdown" id="historyDropdown" open>
+
+            <summary class="history-header">
+
+                <span>Previous Activities</span>
+
+                <span class="history-count" id="activityCount">
+                    0 workouts
+                </span>
+
+            </summary>
+
+            <div id="activityLog">
+
+                <p class="empty-history">
+                    No completed workouts yet. Start your first session!
+                </p>
+
+            </div>
+
+        </details>
+
+    </div>
+
+    <p class="subtext">
+        Prototype demonstration: all sensor readings are simulated
+        and are not real health measurements.
+    </p>
+
+</main>
+
+<footer>
+    PULSEBAND © 2026 | Athletic Sensor Armband Prototype
+</footer>
+
+<script>
+
+// SENSOR VARIABLES
+
+let running = false;
+let seconds = 0;
+
+let calories = 124;
+let distance = 1.25;
+let steps = 2450;
+let heart = 72;
+
+let heartTotal = 0;
+let heartReadings = 0;
+
+let sessionCalories = 0;
+let sessionDistance = 0;
+let sessionSteps = 0;
+
+let timer;
+
+// LOAD SAVED HISTORY
+
+let workoutHistory = [];
+
+try {
+    workoutHistory = JSON.parse(
+        localStorage.getItem("pulsebandHistory")
+    ) || [];
+} catch(error) {
+    workoutHistory = [];
+}
+
+// CREATE HEART RATE GRAPH
+
+const chart = document.getElementById("heartChart");
+
+for(let i = 0; i < 20; i++) {
+
+    const bar = document.createElement("div");
+
+    bar.className = "bar";
+
+    bar.style.height = (20 + Math.random()*50) + "%";
+
+    chart.appendChild(bar);
+
+}
+
+// UPDATE GRAPH
+
+function updateChart() {
+
+    const bars = document.querySelectorAll(".bar");
+
+    bars.forEach(bar => {
+
+        bar.style.height = (20 + Math.random()*75) + "%";
+
+    });
+
+}
+
+// START WORKOUT
+
+function startWorkout() {
+
+    if(running) return;
+
+    running = true;
+
+    document.getElementById("workoutStatus").textContent =
+        "Workout In Progress";
+
+    document.getElementById("workoutIndicator").textContent =
+        "● ACTIVE";
+
+    document.getElementById("status").textContent =
+        "● SIMULATED DEVICE ACTIVE";
+
+    document.getElementById("startButton").textContent =
+        "Workout Running";
+
+    timer = setInterval(updateSensors, 1000);
+
+}
+
+// PAUSE WORKOUT
+
+function pauseWorkout() {
+
+    if(!running) return;
+
+    running = false;
+
+    clearInterval(timer);
+
+    document.getElementById("workoutStatus").textContent =
+        "Workout Paused";
+
+    document.getElementById("workoutIndicator").textContent =
+        "● PAUSED";
+
+    document.getElementById("status").textContent =
+        "● DEVICE CONNECTED";
+
+    document.getElementById("startButton").textContent =
+        "Resume Workout";
+
+}
+
+// FINISH WORKOUT
+
+function finishWorkout() {
+
+    if(seconds === 0) return;
+
+    running = false;
+
+    clearInterval(timer);
+
+    const minutes = Math.floor(seconds / 60);
+
+    const date = new Date().toLocaleString();
+
+    // CREATE WORKOUT RECORD
+
+    const workout = {
+
+        id: Date.now(),
+
+        title: "Athletic Workout",
+
+        date: date,
+
+        duration: minutes,
+
+        seconds: seconds,
+
+        distance: sessionDistance.toFixed(3),
+
+        calories: sessionCalories,
+
+        steps: sessionSteps,
+
+        averageHeart: heartReadings
+            ? Math.round(heartTotal / heartReadings)
+            : 0
+
+    };
+
+    // ADD NEWEST WORKOUT FIRST
+
+    workoutHistory.unshift(workout);
+
+    // SAVE HISTORY
+
+    saveHistory();
+
+    // UPDATE DISPLAY
+
+    renderHistory();
+
+    // RESET SESSION
+
+    seconds = 0;
+
+    sessionCalories = 0;
+    sessionDistance = 0;
+    sessionSteps = 0;
+
+    heartTotal = 0;
+    heartReadings = 0;
+
+    document.getElementById("duration").textContent = "00:00";
+
+    document.getElementById("averageHeart").textContent = "72";
+
+    document.getElementById("workoutStatus").textContent =
+        "Session Completed";
+
+    document.getElementById("workoutIndicator").textContent =
+        "● INACTIVE";
+
+    document.getElementById("status").textContent =
+        "● DEVICE CONNECTED";
+
+    document.getElementById("startButton").textContent =
+        "Start Workout";
+
+}
+
+// SAVE HISTORY TO BROWSER
+
+function saveHistory() {
+
+    localStorage.setItem(
+        "pulsebandHistory",
+        JSON.stringify(workoutHistory)
+    );
+
+}
+
+// DISPLAY ACTIVITY HISTORY
+
+function renderHistory() {
+
+    const log = document.getElementById("activityLog");
+
+    const count = document.getElementById("activityCount");
+
+    // Update workout count
+
+    count.textContent =
+        workoutHistory.length +
+        (workoutHistory.length === 1 ? " workout" : " workouts");
+
+    // Empty history
+
+    if(workoutHistory.length === 0) {
+
+        log.innerHTML = `
+            <p class="empty-history">
+                No completed workouts yet. Start your first session!
+            </p>
+        `;
+
+        return;
+
+    }
+
+    log.innerHTML = "";
+
+    // Render newest first
+
+    workoutHistory.forEach((workout, index) => {
+
+        const entry = document.createElement("details");
+
+        entry.className = "log-entry";
+
+        const summary = document.createElement("summary");
+
+        const title = document.createElement("strong");
+
+        title.textContent =
+            "🏃 " + workout.title;
+
+        const distanceText = document.createElement("span");
+
+        distanceText.textContent =
+            Number(workout.distance).toFixed(2) + " mi";
+
+        summary.append(title, distanceText);
+
+        // Workout details
+
+        const details = document.createElement("div");
+
+        details.className = "log-details";
+
+        details.innerHTML = `
+            <div>📅 Date: ${escapeHTML(workout.date)}</div>
+            <div>⏱ Duration: ${formatDuration(workout.seconds || 0)}</div>
+            <div>📍 Distance: ${Number(workout.distance).toFixed(2)} miles</div>
+            <div>🔥 Calories: ${workout.calories} kcal</div>
+            <div>👟 Steps: ${workout.steps.toLocaleString()}</div>
+            <div>♥ Average Heart Rate: ${workout.averageHeart} BPM</div>
+        `;
+
+        entry.append(summary, details);
+
+        log.appendChild(entry);
+
+    });
+
+}
+
+// SAFE TEXT DISPLAY
+
+function escapeHTML(value) {
+
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+
+}
+
+// FORMAT DURATION
+
+function formatDuration(totalSeconds) {
+
+    const mins = Math.floor(totalSeconds / 60);
+
+    const secs = totalSeconds % 60;
+
+    return String(mins).padStart(2,"0") + ":" +
+           String(secs).padStart(2,"0");
+
+}
+
+// UPDATE SIMULATED SENSOR INFORMATION
+
+function updateSensors() {
+
+    if(!running) return;
+
+    seconds++;
+
+    // Generate fake heart rate
+
+    heart = Math.floor(70 + Math.random()*45);
+
+    // Simulate calories
+
+    calories += Math.random() > 0.5 ? 1 : 0;
+
+    // Simulate distance
+
+    distance += 0.001;
+
+    // Simulate steps
+
+    const newSteps = Math.floor(Math.random()*4);
+
+    steps += newSteps;
+
+    // Simulate temperature
+
+    let temperature = (97.8 + Math.random()*1.5).toFixed(1);
+
+    // Track session totals
+
+    sessionCalories++;
+
+    sessionDistance += 0.001;
+
+    sessionSteps += newSteps;
+
+    heartTotal += heart;
+
+    heartReadings++;
+
+    // Update dashboard
+
+    document.getElementById("heart").textContent = heart;
+
+    document.getElementById("calories").textContent =
+        calories;
+
+    document.getElementById("temperature").textContent =
+        temperature;
+
+    document.getElementById("distance").textContent =
+        distance.toFixed(2);
+
+    document.getElementById("steps").textContent =
+        steps.toLocaleString();
+
+    document.getElementById("averageHeart").textContent =
+        Math.round(heartTotal / heartReadings);
+
+    // Update duration
+
+    document.getElementById("duration").textContent =
+        formatDuration(seconds);
+
+    // Update graph
+
+    updateChart();
+
+}
+
+// LOAD SAVED WORKOUTS ON PAGE START
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
+
