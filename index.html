@@ -6,9 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PulseBand | Athletic Sensor</title>
   
-<audio autoplay loop>
+<audio id="music" loop>
   <source src="portal-radio-music.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
 </audio>
+
+<button onclick="document.getElementById('music').play()">Play music</button>
+<button onclick="document.getElementById('music').pause()">Pause music</button>
 
 <style>
 * {
